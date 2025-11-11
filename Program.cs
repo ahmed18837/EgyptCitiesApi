@@ -2,7 +2,10 @@ using EgyptCitiesApi.Data;
 using EgyptCitiesApi.Interfaces;
 using EgyptCitiesApi.Repositories;
 using EgyptCitiesApi.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +26,26 @@ builder.Services.AddScoped<IGovernorateService, GovernorateService>();
 builder.Services.AddScoped<ICityService, CityService>();
 builder.Services.AddOpenApi();
 
+// Add services
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("5Ds5buxajrESCUo+NHFa+s0gtARwjTVO9Rt8fi7HenA="))
+    };
+});
+
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -33,6 +56,7 @@ var app = builder.Build();
 //}
 
 app.UseHttpsRedirection();
+app.UseAuthentication(); // ·«“„ ﬁ»· UseAuthorization
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

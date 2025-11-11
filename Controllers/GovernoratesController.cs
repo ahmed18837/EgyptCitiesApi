@@ -1,5 +1,6 @@
 ﻿using EgyptCitiesApi.DTOs;
 using EgyptCitiesApi.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,6 +36,7 @@ namespace EgyptCitiesApi.Controllers
 
         // POST: api/Governorates
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<GovernorateDto>> PostGovernorate(GovernorateDto governorateDto)
         {
             var createdGovernorate = await _governorateService.AddGovernorateAsync(governorateDto);
@@ -43,6 +45,7 @@ namespace EgyptCitiesApi.Controllers
 
         // PUT: api/Governorates/5
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutGovernorate(int id, GovernorateDto governorateDto)
         {
             if (id != governorateDto.Id)
@@ -62,6 +65,7 @@ namespace EgyptCitiesApi.Controllers
 
         // DELETE: api/Governorates/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteGovernorate(int id)
         {
             var success = await _governorateService.DeleteGovernorateAsync(id);

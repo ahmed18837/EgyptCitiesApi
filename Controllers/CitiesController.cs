@@ -1,5 +1,6 @@
 ﻿using EgyptCitiesApi.DTOs;
 using EgyptCitiesApi.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -54,6 +55,7 @@ namespace EgyptCitiesApi.Controllers
 
         // POST: api/Cities
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<CityDto>> PostCity(CityDto cityDto)
         {
             var createdCity = await _cityService.AddCityAsync(cityDto);
@@ -69,6 +71,7 @@ namespace EgyptCitiesApi.Controllers
 
         // PUT: api/Cities/5
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutCity(int id, CityDto cityDto)
         {
             if (id != cityDto.Id)
@@ -88,6 +91,7 @@ namespace EgyptCitiesApi.Controllers
 
         // DELETE: api/Cities/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteCity(int id)
         {
             var success = await _cityService.DeleteCityAsync(id);
